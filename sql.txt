@@ -1,0 +1,299 @@
+CREATE TABLE customer(
+SSD NUMBER(6) PRIMARY KEY  ,
+first_name VARCHAR2(25) ,
+last_name varchar(25)
+)
+
+Create table C_address (
+ssd number(20) ,
+C_addres VARCHAR2(10) PRIMARY KEY
+);
+
+
+Create table C_phone_Num (
+ssd number(20),
+C_phone number (20)  primary key
+)
+
+
+
+create table ORDERS(
+ssd number(20),
+ORDER_ID number(20)  primary key ,
+ORDER_DATE date DEFAULT sysdate
+);
+
+Create table consist_of (
+order_id number(20),
+product_id number(20),
+quantity number(10) 
+)
+
+
+CREATE table Handmade_Prods (
+PRODUCT_QUANTITY number (20),
+PRODUCT_ID number (20) PRIMARY key   ,
+PRODUCT_NAME varchar2 (30)
+);
+
+create table made_of(
+product_id number(20),
+part_id number(20)
+)
+
+
+CREATE table PARTS (
+PART_PRICE number (20) ,
+PART_ID number (20)  primary key 
+)
+
+
+Create table supply (
+SUP_QUANTITY number(20),
+sup_id number(20),
+part_id number(20),
+SUP_DATE DATE DEFAULT sysdate
+)
+
+
+create table SUPPLIER(
+sup_id number(20) primary key,
+sup_name VARCHAR2(20) 
+)
+
+
+
+
+
+Create table S_PHONE (
+sup_id number(20),
+sup_phone number(20) primary key
+)
+
+
+             
+
+
+
+ALTER TABLE c_address
+ADD FOREIGN KEY(SSD)
+REFERENCES customer (SSD);
+
+
+
+
+
+ALTER TABLE c_phone_num
+ADD FOREIGN KEY(SSD)
+REFERENCES customer (SSD);
+
+
+
+
+ALTER TABLE orders
+ADD FOREIGN KEY(SSD)
+REFERENCES customer (SSD);
+
+
+
+
+
+ALTER TABLE consist_of
+ADD FOREIGN KEY(product_id)
+REFERENCES handmade_prods(product_id);
+
+
+ALTER TABLE consist_of
+ADD FOREIGN KEY(order_id)
+REFERENCES orders (order_id);
+
+
+
+ALTER TABLE made_of
+ADD FOREIGN KEY(product_id)
+REFERENCES handmade_prods (product_id);
+
+
+ALTER TABLE made_of
+ADD FOREIGN KEY(part_id)
+REFERENCES parts (part_id);
+
+
+
+
+
+
+
+
+
+ALTER TABLE supply
+ADD FOREIGN KEY(sup_id)
+REFERENCES supplier(sup_id);
+
+
+
+
+
+
+
+
+
+ALTER TABLE s_phone
+ADD FOREIGN KEY(sup_id)
+REFERENCES supplier(sup_id);
+
+
+
+ALTER TABLE supply
+ADD FOREIGN KEY(part_id)
+REFERENCES parts(part_id);
+
+
+
+
+---------add part name column----------
+
+alter table parts
+add part_name VARCHAR2(20);
+
+
+
+--inserting customers---------------
+
+INSERT INTO customer VALUES ('12345','tarek','mohamed');
+INSERT INTO customer VALUES ('12346','abdrahman','omara');
+INSERT INTO customer VALUES ('12347','shehap','eldin');
+INSERT INTO customer VALUES ('12348','ziad','bakr');
+INSERT INTO customer VALUES ('12349','ali','ali');
+
+--inserting products----------------------
+INSERT INTO handmade_prods VALUES(50 , 11 , 'tables');
+INSERT INTO handmade_prods values(90 ,12 ,'T-shirt');
+INSERT INTO handmade_prods values(100,13,'candles');
+insert into handmade_prods values(30,14,'candles');
+insert into handmade_prods values(1000,15,'pins');
+
+
+
+-----inserting parts--------------------
+
+INSERT INTO parts VALUES(5,22,'wool');
+INSERT INTO parts values(20 ,23 ,'cotton');
+INSERT INTO parts values(2,24,'paraffin wax');
+insert into parts values(9,25,'wood');
+insert into parts values(1,26,'iron');
+insert into parts values(100,27,'plastic');
+
+
+--------inserting supplier----------------
+
+
+INSERT INTO supplier VALUES(3,'yousef');
+INSERT INTO supplier values(4,'ahmed');
+INSERT INTO supplier values(5,'ramadan');
+insert into supplier values(7,'afsha');
+insert into supplier values(8,'Acunia');
+
+-------inserting customer number-----------
+
+INSERT INTO c_phone_num VALUES(12345,01112313237);
+INSERT INTO c_phone_num VALUES(12345,01112313777);
+INSERT INTO c_phone_num VALUES(12346,01112317886);
+INSERT INTO c_phone_num VALUES(12347,01121552388);
+INSERT INTO c_phone_num VALUES(12348,01145645657);
+INSERT INTO c_phone_num VALUES(12348,01145678657);
+INSERT INTO c_phone_num VALUES(12349,01145646667);
+
+
+-----inserting customer address-----------------
+
+/*     
+increasing the size of address
+*/
+alter table C_address
+modify c_addres VARCHAR2(30);
+
+
+
+INSERT INTO c_address VALUES(12345,'23 nasr city');
+INSERT INTO c_address VALUES(12346,'50 obour city');
+INSERT INTO c_address VALUES(12347,'12 tagamoa five ');
+INSERT INTO c_address VALUES(12348,'20 abasia');
+INSERT INTO c_address VALUES(12349,'2 ainshams twenty ST');
+
+
+
+------inserting orders-----------------
+
+insert into orders values (12345,1,to_date('2022-12-15', 'YYYY/MM/DD'));
+insert into orders values (12346,2,to_date('2022-12-13', 'YYYY/MM/DD'));
+insert into orders values (12347,3,to_date('2022-12-12', 'YYYY/MM/DD'));
+insert into orders values (12348,4,to_date('2022-12-10', 'YYYY/MM/DD'));
+insert into orders values (12349,6,to_date('2022-12-13', 'YYYY/MM/DD'));
+insert into orders values (12345,7,to_date('2022-12-9', 'YYYY/MM/DD'));
+
+
+
+---------consist_of table (product_id && order_id)-----------
+                        /*  orderid,prod_id ,quantity*/
+                        
+DELETE FROM Consist_of;                        
+            
+INSERT INTO consist_of VALUES(1,12,3);
+INSERT INTO consist_of VALUES(1,11,1);
+INSERT INTO consist_of VALUES(2,12,5);
+INSERT INTO consist_of VALUES(3,11,1);
+INSERT INTO consist_of VALUES(4,15,20);
+INSERT INTO consist_of VALUES(6,15,15);
+INSERT INTO consist_of VALUES(6,11,5);
+INSERT INTO consist_of VALUES(7,12,3);
+
+
+--------------made_of------------------------------
+            /*(product_id,part_id))*/
+INSERT INTO made_of VALUES(12,22);
+INSERT INTO made_of VALUES(12,23);
+INSERT INTO made_of VALUES(13,24);
+INSERT INTO made_of VALUES(11,25);
+INSERT INTO made_of VALUES(14,26);
+INSERT INTO made_of VALUES(14,27);
+INSERT INTO made_of VALUES(11,26);
+
+-----------------supply---------------------------
+                        /*(qunat,date,sup_id,part_id)*/
+INSERT INTO supply VALUES(500,3,22,to_date('2022-12-15', 'YYYY/MM/DD'));
+INSERT INTO supply VALUES(100,4,23,to_date('2022-12-10', 'YYYY/MM/DD'));
+INSERT INTO supply VALUES(500,5,25,to_date('2022-12-5', 'YYYY/MM/DD'));
+INSERT INTO supply VALUES(900,7,26,to_date('2022-10-10', 'YYYY/MM/DD'));
+INSERT INTO supply VALUES(300,8,27,to_date('2022-9-1', 'YYYY/MM/DD'));
+
+
+---------------supllier_phone-----------------------
+
+INSERT INTO s_phone VALUES(3,01112313132);
+INSERT INTO s_phone VALUES(4,01215448853);
+INSERT INTO s_phone VALUES(5,01585464684);
+INSERT INTO s_phone VALUES(7,01264845684);
+INSERT INTO s_phone VALUES(8,01068787946);
+INSERT INTO s_phone VALUES(3,01087877894);
+INSERT INTO s_phone VALUES(4,01198751314);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
